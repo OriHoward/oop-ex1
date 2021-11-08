@@ -1,6 +1,8 @@
 import argparse
+import csv
 import json
 
+from CallForElevator import CallForElevator
 from Elevator import Elevator
 
 if __name__ == '__main__':
@@ -15,9 +17,17 @@ if __name__ == '__main__':
     with open(args.building_file) as f:
         data = json.load(f)
 
+    file = open(args.calls_file)
+    csv_reader = csv.reader(file)
+    calls = []
+    for row in csv_reader:
+        calls.append(CallForElevator(row[1],row[2],row[3]))
+
     elevators = []
     for elev in data["_elevators"]:
         elevators.append(Elevator(
             elev["_id"], elev["_speed"], elev["_minFloor"],
             elev["_maxFloor"], elev["_closeTime"], elev["_openTime"],
             elev["_startTime"], elev["_stopTime"]))
+
+    elevators[0].allocate_by_load_factor(calls[0])

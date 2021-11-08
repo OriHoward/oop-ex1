@@ -1,3 +1,6 @@
+import CallForElevator
+
+
 class Elevator:
     def __init__(self, id, speed, min_floor, max_floor, close_time, open_time, start_time, stop_time):
         self.id = id
@@ -9,4 +12,6 @@ class Elevator:
         self.start_time = start_time
         self.stop_time = stop_time
 
+    def allocate_by_load_factor(self, call):
+        pass
 
