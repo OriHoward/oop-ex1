@@ -30,4 +30,6 @@ if __name__ == '__main__':
             elev["_maxFloor"], elev["_closeTime"], elev["_openTime"],
             elev["_startTime"], elev["_stopTime"]))
 
-    elevators[0].allocate_by_load_factor(calls[0])
+
+    elevators[0].allocate_call(calls[0])
+    asdf =elevators[0].allocate_by_time(calls[1])
