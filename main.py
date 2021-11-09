@@ -21,7 +21,7 @@ if __name__ == '__main__':
     csv_reader = csv.reader(file)
     calls = []
     for row in csv_reader:
-        calls.append(CallForElevator(row[1],row[2],row[3]))
+        calls.append(CallForElevator(row[1], row[2], row[3]))
 
     elevators = []
     for elev in data["_elevators"]:
@@ -30,6 +30,6 @@ if __name__ == '__main__':
             elev["_maxFloor"], elev["_closeTime"], elev["_openTime"],
             elev["_startTime"], elev["_stopTime"]))
 
-
     elevators[0].allocate_call(calls[0])
-    asdf =elevators[0].allocate_by_time(calls[1])
+    print(elevators[0].is_intermediate_stop(calls[1]))
+    print(elevators[0].is_intermediate_stop(calls[2]))

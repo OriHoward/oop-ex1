@@ -12,30 +12,39 @@ class Elevator:
         self.open_time = float(open_time)
         self.start_time = float(start_time)
         self.stop_time = float(stop_time)
-        self.curr_call = None
         self.curr_end_time = 0
         self.intermediate_stops = set()
+        self.tasks = []
 
     def allocate_call(self, call):
-        if self.curr_call is None:
-            self.curr_call = call
-            self.intermediate_stops.add(self.curr_call.dest)
-            self.intermediate_stops.add(self.curr_call.source)
-            self.update_time(call)
+        self.tasks.append(call)
+        self.intermediate_stops.add(call.dest)
+        self.intermediate_stops.add(call.source)
+        self.update_time(call)
 
-    def calculate_loadfactor(self, call):
-        time_for_call = (abs(call.source - call.destination)) / self.speed
+    def calculate_loadfactor(self, new_call):
+        time_for_call = (abs(new_call.source - new_call.destination)) / self.speed
         time_for_call = time_for_call + self.stop_time + self.start_time + self.close_time + self.open_time
 
     def is_intermediate_stop(self, new_call: CallForElevator):
-        if self.curr_call is not None:
-            if new_call.call_direction == self.curr_call.call_direction:
-                time_delta = abs(new_call.time - self.curr_call.time)
+        """
+        check the current task compared to the last task we are performing
+        :param new_call:
+        :return:
+        """
+
+        if len(self.tasks) > 0:
+            # we only compare to the last call if the call is in the same direction as the new call
+            curr_call = self.tasks[-1]
+            if new_call.call_direction == curr_call.call_direction:
+                time_delta = abs(new_call.time - curr_call.time)
                 if new_call.call_direction == DirectionEnum.Up and (
-                        self.speed * time_delta) + self.curr_call.source <= new_call.source:
+                        self.speed * time_delta) + curr_call.source <= new_call.source:
+                    self.tasks.append(new_call)
                     return True
                 elif new_call.call_direction == DirectionEnum.Down and (
-                        self.curr_call.source - self.speed * time_delta) >= new_call.source:
+                        curr_call.source - self.speed * time_delta) >= new_call.source:
+                    self.tasks.append(new_call)
                     return True
         return False
 
@@ -43,7 +52,7 @@ class Elevator:
         if new_call.time > self.curr_end_time:
             self.intermediate_stops.clear()
 
-    def update_time(self, curr_call):
-        self.curr_end_time += (abs(curr_call.dest - curr_call.source) / self.speed) + curr_call.time
+    def update_time(self, new_call):
+        self.curr_end_time += (abs(new_call.dest - new_call.source) / self.speed) + new_call.time
         total_stop_time = self.stop_time + self.start_time + self.close_time + self.open_time
         self.curr_end_time += (len(self.intermediate_stops) * total_stop_time)
