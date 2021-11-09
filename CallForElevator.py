@@ -6,4 +6,4 @@ class CallForElevator:
         self.time = float(time)
         self.source = float(source)
         self.dest = float(dest)
-        self.call_direction = DirectionEnum.Up if source < dest else DirectionEnum.Down
+        self.call_direction = DirectionEnum.Up if self.source < self.dest else DirectionEnum.Down
