@@ -1,10 +1,10 @@
 import CallForElevator
-from DirectionEnum import DirectionEnum
+from StatusEnum import StatusEnum
 
 
 class Elevator:
     def __init__(self, _id, speed, min_floor, max_floor, close_time, open_time, start_time, stop_time):
-        self.id = float(_id)
+        self.id = int(_id)
         self.speed = float(speed)
         self.min_floor = float(min_floor)
         self.max_floor = float(max_floor)
@@ -22,9 +22,10 @@ class Elevator:
         self.intermediate_stops.add(call.source)
         self.update_time(call)
 
-    def calculate_loadfactor(self, new_call):
-        time_for_call = (abs(new_call.source - new_call.destination)) / self.speed
+    def calculate_load_factor(self, new_call):
+        time_for_call = (abs(new_call.source - new_call.dest)) / self.speed
         time_for_call = time_for_call + self.stop_time + self.start_time + self.close_time + self.open_time
+        return time_for_call
 
     def is_intermediate_stop(self, new_call: CallForElevator):
         """
@@ -38,12 +39,14 @@ class Elevator:
             curr_call = self.tasks[-1]
             if new_call.call_direction == curr_call.call_direction:
                 time_delta = abs(new_call.time - curr_call.time)
-                if new_call.call_direction == DirectionEnum.Up and (
-                        self.speed * time_delta) + curr_call.source <= new_call.source:
+                floor_delta = self.speed * time_delta
+                if new_call.call_direction == StatusEnum.UP and (
+                        floor_delta) + curr_call.source <= new_call.source:
+                    gap = abs(new_call.source - (curr_call.source + floor_delta))
                     self.tasks.append(new_call)
                     return True
-                elif new_call.call_direction == DirectionEnum.Down and (
-                        curr_call.source - self.speed * time_delta) >= new_call.source:
+                elif new_call.call_direction == StatusEnum.DOWN and (
+                        curr_call.source - floor_delta) >= new_call.source:
                     self.tasks.append(new_call)
                     return True
         return False
@@ -56,3 +59,10 @@ class Elevator:
         self.curr_end_time += (abs(new_call.dest - new_call.source) / self.speed) + new_call.time
         total_stop_time = self.stop_time + self.start_time + self.close_time + self.open_time
         self.curr_end_time += (len(self.intermediate_stops) * total_stop_time)
+
+    def allocate_by_load_factor(self, new_call):
+        if len(self.tasks) > 0:
+            curr_call = self.tasks[-1]
+            dest_to_source = abs(new_call.source - curr_call.dest) / self.speed
+            return abs(self.curr_end_time + dest_to_source - new_call.time)
+        return self.calculate_load_factor(new_call)
