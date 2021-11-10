@@ -7,6 +7,14 @@ from CallForElevator import CallForElevator
 from Elevator import Elevator
 from StatusEnum import StatusEnum
 
+parser = argparse.ArgumentParser()
+parser.add_argument('building_file')
+parser.add_argument('calls_file')
+
+args = parser.parse_args()
+print(args.building_file)
+print(args.calls_file)
+
 
 def parse_input_csv():
     parsed_calls = []
@@ -36,6 +44,10 @@ def execute_algo(calls, elevators):
         min_value = sys.maxsize
         chosen_elev = None
         for elev in elevators:
+            if elev.is_intermediate_stop(call):
+                elev.allocate_call(call)
+                call.curr_allocation = elev.id
+                call.status = StatusEnum.DONE
             curr_min = elev.allocate_by_load_factor(call)
             if curr_min < min_value:
                 min_value = curr_min
@@ -45,7 +57,7 @@ def execute_algo(calls, elevators):
         call.status = StatusEnum.DONE
 
 
-def write_output_file(output_file_name):
+def write_output_file(calls, output_file_name):
     with open(output_file_name, 'w', newline='') as f:
         writer = csv.writer(f)
         for call in calls:
@@ -53,20 +65,12 @@ def write_output_file(output_file_name):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('building_file')
-    parser.add_argument('calls_file')
-
-    args = parser.parse_args()
-    print(args.building_file)
-    print(args.calls_file)
-
     calls = parse_input_csv()
     elevators = parse_input_building()
 
     execute_algo(calls, elevators)
 
-    write_output_file("output.csv")
+    write_output_file(calls,"output.csv")
 
 
 if __name__ == '__main__':
