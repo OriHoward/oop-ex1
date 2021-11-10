@@ -45,7 +45,14 @@ def execute_algo(calls, elevators):
         call.status = StatusEnum.DONE
 
 
-if __name__ == '__main__':
+def write_output_file(output_file_name):
+    with open(output_file_name, 'w', newline='') as f:
+        writer = csv.writer(f)
+        for call in calls:
+            writer.writerow(call.to_papa())
+
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('building_file')
     parser.add_argument('calls_file')
@@ -55,14 +62,12 @@ if __name__ == '__main__':
     print(args.calls_file)
 
     calls = parse_input_csv()
-
     elevators = parse_input_building()
 
     execute_algo(calls, elevators)
 
+    write_output_file("output.csv")
 
-    def write_output_file(output_file_name):
-        with open(output_file_name, 'w', newline='') as f:
-            writer = csv.writer(f)
-            for call in calls:
-                writer.writerow(call.to_papa())
+
+if __name__ == '__main__':
+    main()
