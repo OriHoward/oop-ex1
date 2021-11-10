@@ -39,19 +39,24 @@ def parse_input_building():
     return parsed_elevators
 
 
+def get_elev_by_loadfactor(call, elevators):
+    min_value = sys.maxsize
+    chosen_elev = None
+    for elev in elevators:
+        curr_min = elev.get_predicted_load_factor(call)
+        if curr_min < min_value:
+            min_value = curr_min
+            chosen_elev = elev
+    return chosen_elev
+
+
 def execute_algo(calls, elevators):
     for call in calls:
-        min_value = sys.maxsize
-        chosen_elev = None
-        for elev in elevators:
-            if elev.is_intermediate_stop(call):
-                elev.allocate_call(call)
-                call.curr_allocation = elev.id
-                call.status = StatusEnum.DONE
-            curr_min = elev.allocate_by_load_factor(call)
-            if curr_min < min_value:
-                min_value = curr_min
-                chosen_elev = elev
+        filtered_elevs = list(filter(lambda elev: elev.is_intermediate_stop(call), elevators))
+        if filtered_elevs:
+            chosen_elev = get_elev_by_loadfactor(call, filtered_elevs)
+        else:
+            chosen_elev = get_elev_by_loadfactor(call, elevators)
         chosen_elev.allocate_call(call)
         call.curr_allocation = chosen_elev.id
         call.status = StatusEnum.DONE
@@ -70,7 +75,7 @@ def main():
 
     execute_algo(calls, elevators)
 
-    write_output_file(calls,"output.csv")
+    write_output_file(calls, "output.csv")
 
 
 if __name__ == '__main__':
