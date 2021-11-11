@@ -6,6 +6,7 @@ import sys
 from CallForElevator import CallForElevator
 from Elevator import Elevator
 from StatusEnum import StatusEnum
+import AlgoUtils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('building_file')
@@ -52,12 +53,12 @@ def get_elev_by_loadfactor(call, elevators):
 
 def execute_algo(calls, elevators):
     for call in calls:
-        filtered_elevs = list(filter(lambda elev: elev.is_intermediate_stop(call), elevators))
-        if filtered_elevs:
-            chosen_elev = get_elev_by_loadfactor(call, filtered_elevs)
-        else:
-            chosen_elev = get_elev_by_loadfactor(call, elevators)
+        chosen_elev = get_elev_by_loadfactor(call, elevators)
+        qualified_calls = []
+        AlgoUtils.add_qualified_calls(call, calls, chosen_elev, qualified_calls)
+
         chosen_elev.allocate_call(call)
+
         call.curr_allocation = chosen_elev.id
         call.status = StatusEnum.DONE
 

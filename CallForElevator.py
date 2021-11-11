@@ -8,6 +8,7 @@ class CallForElevator:
         self.dest = int(dest)
         self.status = status
         self.curr_allocation = curr_allocation
+        self.is_allocated = False
         self.call_direction = StatusEnum.UP if self.source < self.dest else StatusEnum.DOWN
 
     def __str__(self):
@@ -15,3 +16,4 @@ class CallForElevator:
 
     def to_papa(self):
         return ["Elevator call", self.time, self.source, self.dest, self.status.value, self.curr_allocation]
+

@@ -28,7 +28,6 @@ class Elevator:
         :param new_call:
         :return:
         """
-
         if len(self.tasks) > 0:
             # we only compare to the last call if the call is in the same direction as the new call
             curr_task: CallForElevator = self.tasks[-1]
@@ -39,10 +38,6 @@ class Elevator:
                     return True
 
         return False
-
-    def clear_intermediate_stops(self, new_call):
-        if new_call.time > self.curr_end_time:
-            self.intermediate_stops.clear()
 
     def get_call_load_factor(self, new_call):
         time_for_call = (abs(new_call.source - new_call.dest)) / self.speed + self.total_stop_time
@@ -55,3 +50,7 @@ class Elevator:
 
     def get_predicted_load_factor(self, new_call):
         return self.load_factor + self.get_call_load_factor(new_call)
+
+    def update_end_time(self,curr_call):
+        self.curr_end_time = ((abs(curr_call.dest - curr_call.source))/self.speed) + curr_call.time
+        return self.curr_end_time
