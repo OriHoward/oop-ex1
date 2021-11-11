@@ -54,10 +54,13 @@ def get_elev_by_loadfactor(call, elevators):
 def execute_algo(calls, elevators):
     for call in calls:
         chosen_elev = get_elev_by_loadfactor(call, elevators)
-        qualified_calls = []
-        AlgoUtils.add_qualified_calls(call, calls, chosen_elev, qualified_calls)
+        qualified_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
 
-        chosen_elev.allocate_call(call)
+        if len(qualified_calls) > 0:
+            qualified_calls.insert(0, call)
+            chosen_elev.allocate_calls(qualified_calls)
+        else:
+            chosen_elev.allocate_call(call)
 
         call.curr_allocation = chosen_elev.id
         call.status = StatusEnum.DONE
@@ -67,7 +70,7 @@ def write_output_file(calls, output_file_name):
     with open(output_file_name, 'w', newline='') as f:
         writer = csv.writer(f)
         for call in calls:
-            writer.writerow(call.to_papa())
+            writer.writerow(call.to_csv_array())
 
 
 def main():

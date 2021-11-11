@@ -14,6 +14,6 @@ class CallForElevator:
     def __str__(self):
         return f"Elevator call,{self.time},{self.source},{self.dest},{self.status},{self.curr_allocation}"
 
-    def to_papa(self):
+    def to_csv_array(self):
         return ["Elevator call", self.time, self.source, self.dest, self.status.value, self.curr_allocation]
 

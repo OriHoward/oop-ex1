@@ -22,6 +22,11 @@ class Elevator:
         self.load_factor += self.get_call_load_factor(call)
         self.tasks.append(call)
 
+    def allocate_calls(self, calls):
+        for call in calls:
+            self.load_factor += self.get_call_load_factor(call)
+        self.tasks.extend(calls)
+
     def is_intermediate_stop(self, new_call: CallForElevator):
         """
         check the current task compared to the last task we are performing
@@ -51,6 +56,5 @@ class Elevator:
     def get_predicted_load_factor(self, new_call):
         return self.load_factor + self.get_call_load_factor(new_call)
 
-    def update_end_time(self,curr_call):
-        self.curr_end_time = ((abs(curr_call.dest - curr_call.source))/self.speed) + curr_call.time
-        return self.curr_end_time
+    def get_call_endtime(self, curr_call):
+        return ((abs(curr_call.dest - curr_call.source)) / self.speed) + curr_call.time + self.total_stop_time
