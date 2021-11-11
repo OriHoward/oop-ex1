@@ -20,11 +20,16 @@ class Elevator:
 
     def allocate_call(self, call):
         self.load_factor += self.get_call_load_factor(call)
+        call.curr_allocation = self.id
+        call.status=StatusEnum.DONE
         self.tasks.append(call)
 
-    def allocate_calls(self, calls):
+    def allocate_calls(self, calls: list[CallForElevator]):
         for call in calls:
+            call.curr_allocation = self.id
+            call.status = StatusEnum.DONE
             self.load_factor += self.get_call_load_factor(call)
+
         self.tasks.extend(calls)
 
     def is_intermediate_stop(self, new_call: CallForElevator):
