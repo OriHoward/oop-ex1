@@ -29,7 +29,6 @@ class Elevator:
             call.curr_allocation = self.id
             call.status = StatusEnum.DONE
             self.load_factor += self.get_call_load_factor(call)
-
         self.tasks.extend(calls)
 
     def is_intermediate_stop(self, new_call: CallForElevator):

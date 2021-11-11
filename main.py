@@ -52,18 +52,16 @@ def get_elev_by_loadfactor(call, elevators):
 
 
 def execute_algo(calls, elevators):
-    for call in calls:
+    uncompleted_calls = filter(lambda curr_call: curr_call.curr_allocation != -1, calls.copy())
+    for call in uncompleted_calls:
         chosen_elev = get_elev_by_loadfactor(call, elevators)
-        qualified_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
+        potential_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
 
-        if len(qualified_calls) > 0:
-            qualified_calls.insert(0, call)
-            chosen_elev.allocate_calls(qualified_calls)
+        if len(potential_calls) > 0:
+            potential_calls.insert(0, call)
+            chosen_elev.allocate_calls(potential_calls)
         else:
             chosen_elev.allocate_call(call)
-
-        call.curr_allocation = chosen_elev.id
-        call.status = StatusEnum.DONE
 
 
 def write_output_file(calls, output_file_name):
