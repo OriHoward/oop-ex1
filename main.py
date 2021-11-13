@@ -3,10 +3,10 @@ import csv
 import json
 import sys
 
+import AlgoUtils
+from Building import Building
 from CallForElevator import CallForElevator
 from Elevator import Elevator
-from StatusEnum import StatusEnum
-import AlgoUtils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('building_file')
@@ -17,12 +17,14 @@ print(args.building_file)
 print(args.calls_file)
 
 
-def parse_input_csv():
+def parse_input_csv(max_floor, min_floor):
     parsed_calls = []
     file = open(args.calls_file)
     csv_reader = csv.reader(file)
     for row in csv_reader:
-        parsed_calls.append(CallForElevator(row[1], row[2], row[3], row[4], row[5]))
+        prefix, time, source, dest, status, curr_allocation = row
+        if min_floor <= int(source) <= max_floor and min_floor <= int(dest) <= max_floor:
+            parsed_calls.append(CallForElevator(time, source, dest, status, curr_allocation))
 
     return parsed_calls
 
@@ -31,13 +33,16 @@ def parse_input_building():
     parsed_elevators = []
     with open(args.building_file) as f:
         data = json.load(f)
+
     for idx, elev in enumerate(data["_elevators"]):
         parsed_elevators.append(Elevator(
             idx, elev["_speed"], elev["_minFloor"],
             elev["_maxFloor"], elev["_closeTime"], elev["_openTime"],
             elev["_startTime"], elev["_stopTime"]))
 
-    return parsed_elevators
+    building = Building(data["_minFloor"], data["_maxFloor"], parsed_elevators)
+
+    return building
 
 
 def get_elev_by_loadfactor(call, elevators):
@@ -72,10 +77,10 @@ def write_output_file(calls, output_file_name):
 
 
 def main():
-    calls = parse_input_csv()
-    elevators = parse_input_building()
+    building = parse_input_building()
+    calls = parse_input_csv(building.max_floor, building.min_floor)
 
-    execute_algo(calls, elevators)
+    execute_algo(calls, building.elevator_list)
 
     write_output_file(calls, "output.csv")
 
