@@ -56,7 +56,7 @@ def get_elev_by_loadfactor(call, elevators):
 
 
 def execute_algo(calls, elevators):
-    uncompleted_calls = filter(lambda curr_call: curr_call.curr_allocation != -1, calls.copy())
+    uncompleted_calls = filter(lambda curr_call: curr_call.curr_allocation == -1, calls.copy())
     for call in uncompleted_calls:
         chosen_elev = get_elev_by_loadfactor(call, elevators)
         potential_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
