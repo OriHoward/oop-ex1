@@ -16,7 +16,6 @@ args = parser.parse_args()
 print(args.building_file)
 print(args.calls_file)
 
-
 def parse_input_csv(max_floor, min_floor):
     parsed_calls = []
     file = open(args.calls_file)
