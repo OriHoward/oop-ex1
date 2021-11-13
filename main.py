@@ -16,6 +16,7 @@ args = parser.parse_args()
 print(args.building_file)
 print(args.calls_file)
 
+
 def parse_input_csv(max_floor, min_floor):
     parsed_calls = []
     file = open(args.calls_file)
@@ -56,16 +57,16 @@ def get_elev_by_loadfactor(call, elevators):
 
 
 def execute_algo(calls, elevators):
-    uncompleted_calls = filter(lambda curr_call: curr_call.curr_allocation == -1, calls.copy())
-    for call in uncompleted_calls:
-        chosen_elev = get_elev_by_loadfactor(call, elevators)
-        potential_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
+    for call in calls:
+        if call.curr_allocation == -1:
+            chosen_elev = get_elev_by_loadfactor(call, elevators)
+            potential_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
 
-        if len(potential_calls) > 0:
-            potential_calls.insert(0, call)
-            chosen_elev.allocate_calls(potential_calls)
-        else:
-            chosen_elev.allocate_call(call)
+            if len(potential_calls) > 0:
+                potential_calls.insert(0, call)
+                chosen_elev.allocate_calls(potential_calls)
+            else:
+                chosen_elev.allocate_call(call)
 
 
 def write_output_file(calls, output_file_name):
