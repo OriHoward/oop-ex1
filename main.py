@@ -1,48 +1,20 @@
 import argparse
 import csv
-import json
 import sys
 
 import AlgoUtils
-from Building import Building
-from CallForElevator import CallForElevator
-from Elevator import Elevator
+from input_parser import parse_input_csv, parse_input_building
 
-parser = argparse.ArgumentParser()
-parser.add_argument('building_file')
-parser.add_argument('calls_file')
+try:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('building_file')
+    parser.add_argument('calls_file')
 
-args = parser.parse_args()
-print(args.building_file)
-print(args.calls_file)
-
-
-def parse_input_csv(max_floor, min_floor):
-    parsed_calls = []
-    file = open(args.calls_file)
-    csv_reader = csv.reader(file)
-    for row in csv_reader:
-        prefix, time, source, dest, status, curr_allocation = row
-        if min_floor <= int(source) <= max_floor and min_floor <= int(dest) <= max_floor:
-            parsed_calls.append(CallForElevator(time, source, dest, status, curr_allocation))
-
-    return parsed_calls
-
-
-def parse_input_building():
-    parsed_elevators = []
-    with open(args.building_file) as f:
-        data = json.load(f)
-
-    for idx, elev in enumerate(data["_elevators"]):
-        parsed_elevators.append(Elevator(
-            idx, elev["_speed"], elev["_minFloor"],
-            elev["_maxFloor"], elev["_closeTime"], elev["_openTime"],
-            elev["_startTime"], elev["_stopTime"]))
-
-    building = Building(data["_minFloor"], data["_maxFloor"], parsed_elevators)
-
-    return building
+    args = parser.parse_args()
+    print(args.building_file)
+    print(args.calls_file)
+except:
+    print('wrong arguments were given to the script')
 
 
 def get_elev_by_loadfactor(call, elevators):
@@ -68,6 +40,7 @@ def execute_algo(calls, elevators):
             else:
                 chosen_elev.allocate_call(call)
 
+
 def write_output_file(calls, output_file_name):
     with open(output_file_name, 'w', newline='') as f:
         writer = csv.writer(f)
@@ -76,12 +49,17 @@ def write_output_file(calls, output_file_name):
 
 
 def main():
-    building = parse_input_building()
-    calls = parse_input_csv(building.max_floor, building.min_floor)
+    try:
+        building = parse_input_building(args.building_file)
+        calls = parse_input_csv(building.max_floor, building.min_floor, args.calls_file)
 
-    execute_algo(calls, building.elevator_list)
+        execute_algo(calls, building.elevator_list)
 
-    write_output_file(calls, "output.csv")
+        write_output_file(calls, "output.csv")
+    except FileNotFoundError:
+        print('Error allocating elevators, please make sure you provided the right arguments')
+    except Exception as e:
+        print(f'error during also execution {e}')
 
 
 if __name__ == '__main__':

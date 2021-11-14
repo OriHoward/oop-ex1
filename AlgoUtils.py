@@ -28,11 +28,11 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
                     interval_to_check = elev.get_call_endtime(call)
                     allocated_call = call
                 qualified_calls.append(call)
-    qualified_calls = filter_to_qualified_calls(first_call_we_started_from, qualified_calls, elev)
+    qualified_calls = filter_qualified_calls(first_call_we_started_from, qualified_calls, elev)
     return qualified_calls
 
 
-def filter_to_qualified_calls(allocated_call, qualified_calls: list[CallForElevator], elev):
+def filter_qualified_calls(allocated_call, qualified_calls: list[CallForElevator], elev):
     good_calls = []
     curr_time_stamp = allocated_call.time
     if allocated_call.call_direction == StatusEnum.DOWN:
