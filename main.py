@@ -68,7 +68,6 @@ def execute_algo(calls, elevators):
             else:
                 chosen_elev.allocate_call(call)
 
-
 def write_output_file(calls, output_file_name):
     with open(output_file_name, 'w', newline='') as f:
         writer = csv.writer(f)

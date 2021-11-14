@@ -8,7 +8,6 @@ class CallForElevator:
         self.dest = int(dest)
         self.status = status
         self.curr_allocation = int(curr_allocation)
-        self.is_allocated = False
         self.call_direction = StatusEnum.UP if self.source < self.dest else StatusEnum.DOWN
 
     def __str__(self):

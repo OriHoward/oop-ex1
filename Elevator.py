@@ -31,23 +31,6 @@ class Elevator:
             self.load_factor += self.get_call_load_factor(call)
         self.tasks.extend(calls)
 
-    def is_intermediate_stop(self, new_call: CallForElevator):
-        """
-        check the current task compared to the last task we are performing
-        :param new_call:
-        :return:
-        """
-        if len(self.tasks) > 0:
-            # we only compare to the last call if the call is in the same direction as the new call
-            curr_task: CallForElevator = self.tasks[-1]
-            if curr_task.call_direction == new_call.call_direction:
-                if curr_task.call_direction == StatusEnum.UP and curr_task.source < new_call.source:
-                    return True
-                if curr_task.call_direction == StatusEnum.DOWN and curr_task.source > new_call.source:
-                    return True
-
-        return False
-
     def get_call_load_factor(self, new_call):
         time_for_call = (abs(new_call.source - new_call.dest)) / self.speed + self.total_stop_time
         if len(self.tasks) > 0:
