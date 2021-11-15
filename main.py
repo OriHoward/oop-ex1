@@ -25,7 +25,7 @@ def execute_algo(calls, elevators):
 
             if len(potential_calls) > 0:
                 potential_calls.insert(0, call)
-                chosen_elev.allocate_calls(potential_calls)
+                chosen_elev.allocate_calls_with_loadfactor(potential_calls)
             else:
                 chosen_elev.allocate_call(call)
 
