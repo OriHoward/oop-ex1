@@ -7,12 +7,12 @@ from input_parser import parse_input_csv, parse_input_building
 
 try:
     parser = argparse.ArgumentParser()
-    parser.add_argument('building_file')
-    parser.add_argument('calls_file')
+    parser.add_argument('building_file', nargs='?', help='building input file, in json format')
+    parser.add_argument('calls_file', nargs='?', help='calls input file, in csv format')
+    parser.add_argument('output_file', nargs='?', default='out.csv', help='output file, in csv format')
 
     args = parser.parse_args()
-    print(args.building_file)
-    print(args.calls_file)
+    print(f"these are the arguments: {args.building_file} {args.calls_file} {args.output_file}")
 except:
     print('wrong arguments were given to the script')
 
@@ -55,7 +55,7 @@ def main():
 
         execute_algo(calls, building.elevator_list)
 
-        write_output_file(calls, "output.csv")
+        write_output_file(calls, args.output_file)
     except FileNotFoundError:
         print('Error allocating elevators, please make sure you provided the right arguments')
     except Exception as e:
