@@ -5,17 +5,6 @@ import sys
 import AlgoUtils
 from input_parser import parse_input_csv, parse_input_building
 
-try:
-    parser = argparse.ArgumentParser()
-    parser.add_argument('building_file', nargs='?', help='building input file, in json format')
-    parser.add_argument('calls_file', nargs='?', help='calls input file, in csv format')
-    parser.add_argument('output_file', nargs='?', default='out.csv', help='output file, in csv format')
-
-    args = parser.parse_args()
-    print(f"these are the arguments: {args.building_file} {args.calls_file} {args.output_file}")
-except:
-    print('wrong arguments were given to the script')
-
 
 def get_elev_by_loadfactor(call, elevators):
     min_value = sys.maxsize
@@ -50,6 +39,14 @@ def write_output_file(calls, output_file_name):
 
 def main():
     try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('building_file', nargs='?', help='building input file, in json format')
+        parser.add_argument('calls_file', nargs='?', help='calls input file, in csv format')
+        parser.add_argument('output_file', nargs='?', default='out.csv', help='output file, in csv format')
+
+        args = parser.parse_args()
+        print(f"these are the arguments: {args.building_file} {args.calls_file} {args.output_file}")
+
         building = parse_input_building(args.building_file)
         calls = parse_input_csv(building.max_floor, building.min_floor, args.calls_file)
 
@@ -59,7 +56,7 @@ def main():
     except FileNotFoundError:
         print('Error allocating elevators, please make sure you provided the right arguments')
     except Exception as e:
-        print(f'error during also execution {e}')
+        print(f'error during also execution please check given arguments{e}')
 
 
 if __name__ == '__main__':

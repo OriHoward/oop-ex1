@@ -22,3 +22,7 @@ example with the optional argument:
 `python main.py Ex1_Buildings/B3.json Ex1_Calls/Calls_c.csv B3C3.csv`
 
 created a csv file `B3C3.csv` (default) with the allocation results
+
+running the output using the simulator given:
+
+`java -jar Ex1_checker_V1.2_obf.jar 12,12 ./Ex1_Buildings/B4.json out.csv out.log`
