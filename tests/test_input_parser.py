@@ -2,7 +2,8 @@ from unittest import TestCase
 from unittest.mock import patch, mock_open
 
 from CallForElevator import CallForElevator
-from input_parser import parse_input_csv
+from input_parser import parse_input_csv, parse_input_building
+import json
 
 
 class Test(TestCase):
@@ -14,4 +15,23 @@ class Test(TestCase):
         self.assertEqual(filtered_calls, [])
 
     def test_parse_input_building(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+        json_data = {
+            "_minFloor": -2,
+            "_maxFloor": 10,
+            "_elevators": [
+                {
+                    "_id": 0,
+                    "_speed": 0.5,
+                    "_minFloor": -2,
+                    "_maxFloor": 10,
+                    "_closeTime": 2.0,
+                    "_openTime": 2.0,
+                    "_startTime": 3.0,
+                    "_stopTime": 3.0
+                }
+            ]
+        }
+        with patch("builtins.open", mock_open(read_data=json.dumps(json_data))):
+            buidling = parse_input_building("path/to/open")
+            self.assertEqual(buidling.max_floor, json_data["_maxFloor"])
+            self.assertEqual(buidling.min_floor, json_data["_minFloor"])
