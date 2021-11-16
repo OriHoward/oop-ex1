@@ -32,8 +32,7 @@ class Elevator:
 
         self.load_factor += abs(max(intermediate_stops) - min(intermediate_stops)) / self.speed
         self.load_factor += self.get_call_load_factor(calls[0])
-        # the reason for the -1 is because one stop is calculated by the function call above
-        self.load_factor += (len(intermediate_stops) - 1) * self.total_stop_time
+        self.load_factor += (len(intermediate_stops)) * self.total_stop_time
         self.tasks.extend(calls)
 
     def get_call_load_factor(self, new_call):
@@ -41,7 +40,6 @@ class Elevator:
         if len(self.tasks) > 0:
             curr_call = self.tasks[-1]
             dest_to_source = (abs(new_call.source - curr_call.dest) / self.speed)
-
             return dest_to_source + time_for_call
         return time_for_call
 
