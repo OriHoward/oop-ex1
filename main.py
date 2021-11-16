@@ -6,28 +6,20 @@ import AlgoUtils
 from input_parser import parse_input_csv, parse_input_building
 
 
-def get_elev_by_loadfactor(call, elevators):
-    min_value = sys.maxsize
-    chosen_elev = None
-    for elev in elevators:
-        curr_min = elev.get_predicted_load_factor(call)
-        if curr_min < min_value:
-            min_value = curr_min
-            chosen_elev = elev
-    return chosen_elev
-
-
 def execute_algo(calls, elevators):
     for call in calls:
         if call.curr_allocation == -1:
-            chosen_elev = get_elev_by_loadfactor(call, elevators)
-            potential_calls = AlgoUtils.add_qualified_calls(call, calls, chosen_elev)
-
-            if len(potential_calls) > 0:
-                potential_calls.insert(0, call)
-                chosen_elev.allocate_calls_with_loadfactor(potential_calls)
-            else:
-                chosen_elev.allocate_call(call)
+            min_value = sys.maxsize
+            chosen_elev = None
+            path_to_execute = []
+            for elev in elevators:
+                potential_calls = AlgoUtils.add_qualified_calls(call, calls, elev)
+                curr_min = elev.get_path_load_factor_estimation(potential_calls)
+                if curr_min < min_value:
+                    min_value = curr_min
+                    chosen_elev = elev
+                    path_to_execute = potential_calls
+            chosen_elev.allocate_calls_with_loadfactor(path_to_execute)
 
 
 def write_output_file(calls, output_file_name):

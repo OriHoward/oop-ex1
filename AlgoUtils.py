@@ -28,6 +28,7 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
                     curr_call = call
                 qualified_calls.append(call)
     qualified_calls = filter_qualified_calls(first_call_we_started_from, qualified_calls, elev)
+    qualified_calls.insert(0, first_call_we_started_from)
     return qualified_calls
 
 
