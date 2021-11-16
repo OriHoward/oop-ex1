@@ -49,10 +49,11 @@ def main():
 
         building = parse_input_building(args.building_file)
         calls = parse_input_csv(building.max_floor, building.min_floor, args.calls_file)
-
-        execute_algo(calls, building.elevator_list)
-
-        write_output_file(calls, args.output_file)
+        if len(calls) > 0:
+            execute_algo(calls, building.elevator_list)
+            write_output_file(calls, args.output_file)
+        else:
+            print("calls file didn't match building configuration")
     except FileNotFoundError:
         print('Error allocating elevators, please make sure you provided the right arguments')
     except Exception as e:

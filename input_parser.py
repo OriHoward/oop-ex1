@@ -12,7 +12,9 @@ def parse_input_csv(max_floor: int, min_floor: int, calls_file_path: str) -> lis
         csv_reader = csv.reader(f)
         for row in csv_reader:
             prefix, time, source, dest, status, curr_allocation = row
-            if min_floor <= int(source) <= max_floor and min_floor <= int(dest) <= max_floor:
+            if not (min_floor <= int(source) <= max_floor and min_floor <= int(dest) <= max_floor):
+                return []
+            else:
                 parsed_calls.append(CallForElevator(time, source, dest, status, curr_allocation))
 
     return parsed_calls

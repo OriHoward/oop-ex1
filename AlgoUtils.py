@@ -14,19 +14,18 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
     first_call_we_started_from = allocated_call
     qualified_calls = []
     interval_to_check = elev.get_call_endtime(allocated_call)
+    curr_call = allocated_call
     for call in calls:
-        if allocated_call.time < call.time < interval_to_check and call.curr_allocation == -1 and call.call_direction == allocated_call.call_direction:
-            if call.call_direction == StatusEnum.UP and allocated_call.source < call.source < allocated_call.dest:
-                if allocated_call.dest < call.dest and elev.get_call_endtime(allocated_call) < elev.get_call_endtime(
-                        call):
+        if curr_call.time < call.time < interval_to_check and call.curr_allocation == -1 and call.call_direction == curr_call.call_direction:
+            if call.call_direction == StatusEnum.UP and curr_call.source < call.source < curr_call.dest:
+                if curr_call.dest < call.dest and elev.get_call_endtime(curr_call) < elev.get_call_endtime(call):
                     interval_to_check = elev.get_call_endtime(call)
-                    allocated_call = call
+                    curr_call = call
                 qualified_calls.append(call)
-            if call.call_direction == StatusEnum.DOWN and allocated_call.source > call.source > allocated_call.dest:
-                if allocated_call.dest > call.dest and elev.get_call_endtime(allocated_call) < elev.get_call_endtime(
-                        call):
+            if call.call_direction == StatusEnum.DOWN and curr_call.source > call.source > curr_call.dest:
+                if curr_call.dest > call.dest and elev.get_call_endtime(curr_call) < elev.get_call_endtime(call):
                     interval_to_check = elev.get_call_endtime(call)
-                    allocated_call = call
+                    curr_call = call
                 qualified_calls.append(call)
     qualified_calls = filter_qualified_calls(first_call_we_started_from, qualified_calls, elev)
     return qualified_calls
