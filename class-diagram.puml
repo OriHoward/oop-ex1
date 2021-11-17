@@ -20,10 +20,10 @@ class Elevator {
     total_stop_time: float
     load_factor: float
 
-    +get_path_load(calls: list[CallForElevator]) -> float:
-    +get_path_load_factor_estimation(calls: list[CallForElevator]) -> int:
-    +allocate_calls_with_loadfactor(calls: list[CallForElevator]) -> None:
-    +get_call_endtime(curr_call) -> float
+    +get_path_load(calls: list[CallForElevator])
+    +get_path_load_factor_estimation(calls: list[CallForElevator])
+    +allocate_calls_with_loadfactor(calls: list[CallForElevator])
+    +get_call_endtime(curr_call)
 }
 
 
@@ -40,14 +40,15 @@ class CallForElevator{
 
 
 class AllocationAlgo {
- + {static} int findClosestFreeElevator()
+ + {static} add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElevator], elev: Elevator)
+ + {static} filter_qualified_calls(allocated_call, qualified_calls: list[CallForElevator], elev)
 
 }
 
 class input_parser {
 
-+ parse_input_csv(max_floor: int, min_floor: int, calls_file_path: str) -> list[CallForElevator]
-+ parse_input_building(building_file_path: str) -> Building
++ {static}parse_input_csv(max_floor: int, min_floor: int, calls_file_path: str)
++ {static}parse_input_building(building_file_path: str)
 
 }
 
