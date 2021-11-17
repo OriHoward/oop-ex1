@@ -7,10 +7,11 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
     """
     this function is trying to build a path of calls according to the direction time and floors of a given call.
     the calls that are in the calls' interval (time it takes for the call to complete)
+    then the calls are filtered in the next function according to a movement simulation
     :param allocated_call: Elevator call to start path from
     :param calls: calls to try and find a path in
     :param elev: elevator that is used to estimate the path according to the elevators' parameters
-    :return: a list of calls that form a path in the same direction
+    :return: a list of calls that form a path
     """
     initial_call = allocated_call
     qualified_calls = []
@@ -34,6 +35,13 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
 
 
 def filter_qualified_calls(allocated_call, qualified_calls: list[CallForElevator], elev):
+    """
+    given a path filters calls that won't be picked up in the interval according to the given elevator
+    :param allocated_call: first call of the path
+    :param qualified_calls: the path that was build using the call
+    :param elev: elevator to simulate movement on the path
+    :return: a list of calls that are filtered according to the elevator
+    """
     filtered_path = []
     curr_position = allocated_call.source
     curr_time = allocated_call.time
