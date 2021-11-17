@@ -2,7 +2,7 @@ import argparse
 import csv
 import sys
 
-import AlgoUtils
+from allocation_algo import add_qualified_calls
 from input_parser import parse_input_csv, parse_input_building
 
 
@@ -13,7 +13,7 @@ def execute_algo(calls, elevators):
             chosen_elev = None
             path_to_execute = []
             for elev in elevators:
-                potential_calls = AlgoUtils.add_qualified_calls(call, calls, elev)
+                potential_calls = add_qualified_calls(call, calls, elev)
                 curr_min = elev.get_path_load_factor_estimation(potential_calls)
                 if curr_min < min_value:
                     min_value = curr_min

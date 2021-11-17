@@ -5,13 +5,14 @@ from StatusEnum import StatusEnum
 
 def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElevator], elev: Elevator):
     """
-    we currently introduce a naive approach in this function, this might be a bug
-    :param allocated_call:
-    :param calls:
-    :param elev:
-    :return:
+    this function is trying to build a path of calls according to the direction time and floors of a given call.
+    the calls that are in the calls' interval (time it takes for the call to complete)
+    :param allocated_call: Elevator call to start path from
+    :param calls: calls to try and find a path in
+    :param elev: elevator that is used to estimate the path according to the elevators' parameters
+    :return: a list of calls that form a path in the same direction
     """
-    first_call_we_started_from = allocated_call
+    initial_call = allocated_call
     qualified_calls = []
     interval_to_check = elev.get_call_endtime(allocated_call)
     curr_call = allocated_call
@@ -27,8 +28,8 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
                     interval_to_check = elev.get_call_endtime(call)
                     curr_call = call
                 qualified_calls.append(call)
-    qualified_calls = filter_qualified_calls(first_call_we_started_from, qualified_calls, elev)
-    qualified_calls.insert(0, first_call_we_started_from)
+    qualified_calls = filter_qualified_calls(initial_call, qualified_calls, elev)
+    qualified_calls.insert(0, initial_call)
     return qualified_calls
 
 
