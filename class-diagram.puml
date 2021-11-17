@@ -1,0 +1,65 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Building {
+    min_floor:int
+    max_floor:int
+    elevator_list:list[Elevator]
+}
+
+class Elevator {
+    id: int
+    speed: float
+    min_floor: float
+    max_floor: float
+    close_time: float
+    open_time: float
+    start_time: float
+    stop_time: float
+    tasks: list[CallForElevator]
+    total_stop_time: float
+    load_factor: float
+
+    +get_path_load(calls: list[CallForElevator]) -> float:
+    +get_path_load_factor_estimation(calls: list[CallForElevator]) -> int:
+    +allocate_calls_with_loadfactor(calls: list[CallForElevator]) -> None:
+    +get_call_endtime(curr_call) -> float
+}
+
+
+class CallForElevator{
+    time
+    source
+    dest
+    status
+    curr_allocation
+    call_direction
+
+    +to_csv_array()
+}
+
+
+class AllocationAlgo {
+ + {static} int findClosestFreeElevator()
+
+}
+
+class input_parser {
+
++ parse_input_csv(max_floor: int, min_floor: int, calls_file_path: str) -> list[CallForElevator]
++ parse_input_building(building_file_path: str) -> Building
+
+}
+
+Building o-- AllocationAlgo
+Elevator o-- AllocationAlgo
+CallForElevator o--	AllocationAlgo
+
+enum StatusEnum {
+UP
+DOWN
+LEVEL
+ALLOCATED
+}
+
+@enduml

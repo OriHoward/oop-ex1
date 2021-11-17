@@ -2,7 +2,9 @@
 
 ## Running the script
 
-### Prerequisites: Python 3.9.7
+### Prerequisites
+* Python 3.9.7
+* no additional packages are used
 
 The `main.py` script needs the following arguments to run:
 
