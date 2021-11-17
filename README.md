@@ -1,6 +1,6 @@
 # oop-ex1
 
-###**Detailed documentation can be found in the `pdf` file in this repo**
+### Detailed documentation can be found in the `pdf` file in this repo
 
 ## Running the script
 
