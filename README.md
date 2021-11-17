@@ -6,6 +6,7 @@
 ├── test                    # tests
 ├── misc                    # contains misc files
 └── get_results.py          # utility script to get results fast
+└── OOP - Assignment 1.pdf  # Detailed documentation                 
 └── main.py                 
 └── StatusEnum.py
 └── Building.py
