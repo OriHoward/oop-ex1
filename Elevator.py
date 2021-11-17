@@ -50,7 +50,7 @@ class Elevator:
         """
         for call in calls:
             call.curr_allocation = self.id
-            call.status = StatusEnum.DONE
+            call.status = StatusEnum.ALLOCATED
 
         self.load_factor += self.get_path_load(calls)
         self.tasks.extend(calls)
