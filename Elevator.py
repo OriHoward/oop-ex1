@@ -55,13 +55,5 @@ class Elevator:
         self.load_factor += self.get_path_load(calls)
         self.tasks.extend(calls)
 
-    def get_call_load_factor(self, new_call):
-        time_for_call = ((abs(new_call.source - new_call.dest)) / self.speed) + self.total_stop_time
-        if len(self.tasks) > 0:
-            curr_call = self.tasks[-1]
-            dest_to_source = (abs(new_call.source - curr_call.dest) / self.speed)
-            return dest_to_source + time_for_call
-        return time_for_call
-
     def get_call_endtime(self, curr_call):
         return ((abs(curr_call.dest - curr_call.source)) / self.speed) + curr_call.time + self.total_stop_time
