@@ -2,6 +2,22 @@
 
 ### Detailed documentation can be found in the `pdf` file in this repo
 
+```
+├── test                    # tests
+├── misc                    # contains misc files
+└── get_results.py          # utility script to get results fast
+└── main.py                 
+└── StatusEnum.py
+└── Building.py
+└── CallForElevator.py
+└── input_parser.py
+└── allocation_algo.py
+└── Elevator.py
+└── README.md
+```
+
+
+
 ## Running the script
 
 ### Prerequisites
