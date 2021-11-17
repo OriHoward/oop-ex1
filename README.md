@@ -33,7 +33,7 @@ running the output using the simulator given:
 
 ##UML
 
-![UML](./class-diagram.png)
+![UML](misc/class-diagram.png)
 
 ## results
 
