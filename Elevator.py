@@ -1,4 +1,4 @@
-from CallForElevator import *
+from CallForElevator import CallForElevator
 from StatusEnum import StatusEnum
 
 
@@ -17,6 +17,13 @@ class Elevator:
         self.load_factor = 0
 
     def get_path_load(self, calls: list[CallForElevator]):
+        """
+        given a list of calls the calls are all in the same direction and each call in on the way on each call after it
+        this function calculates the amount of time it takes for the elevator to complete the path
+
+        :param calls: a list of calls
+        :return: returns the amount of time it takes for the elevator to complete the path
+        """
         intermediate_stops = set()
         path_load = 0
         for call in calls:
@@ -28,10 +35,19 @@ class Elevator:
 
         return path_load
 
-    def get_path_load_factor_estimation(self, calls):
+    def get_path_load_factor_estimation(self, calls: list[CallForElevator]) -> int:
+        """
+        :param calls: list of calls
+        :return: the load estimation if the elevators takes the calls
+        """
         return self.load_factor + self.get_path_load(calls)
 
     def allocate_calls_with_loadfactor(self, calls: list[CallForElevator]):
+        """
+        allocates the given list of calls to this elevator and adds the time it takes to the load_factor of the elevator
+        :param calls: list of calls to allocate
+        :return:
+        """
         for call in calls:
             call.curr_allocation = self.id
             call.status = StatusEnum.DONE
