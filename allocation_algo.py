@@ -34,24 +34,22 @@ def add_qualified_calls(allocated_call: CallForElevator, calls: list[CallForElev
 
 
 def filter_qualified_calls(allocated_call, qualified_calls: list[CallForElevator], elev):
-    good_calls = []
-    curr_time_stamp = allocated_call.time
+    filtered_path = []
+    curr_position = allocated_call.source
+    curr_time = allocated_call.time
     if allocated_call.call_direction == StatusEnum.DOWN:
-        qualified_calls.sort(key=lambda potential_call: potential_call.source, reverse=True)
         for call in qualified_calls:
-            time_diff = abs(curr_time_stamp - call.time)
-            curr_floor = allocated_call.source - (time_diff * elev.speed)
-            if call.source < curr_floor:
-                curr_time_stamp += elev.total_stop_time + ((abs(curr_floor - call.source)) / elev.speed)
-                good_calls.append(call)
+            floors_traveled = (abs(curr_time - call.time) * elev.speed)
+            curr_position = curr_position - floors_traveled
+            curr_time = call.time
+            if curr_position > call.source:
+                filtered_path.append(call)
     else:
-        curr_position = allocated_call.source
-        curr_time = allocated_call.time
         for call in qualified_calls:
             floors_traveled = (abs(curr_time - call.time) * elev.speed)
             curr_position = floors_traveled + curr_position
             curr_time = call.time
             if curr_position < call.source:
-                good_calls.append(call)
-    good_calls.sort(key=lambda nice_call: nice_call.time)
-    return good_calls
+                filtered_path.append(call)
+    filtered_path.sort(key=lambda curr_call: curr_call.time)
+    return filtered_path
