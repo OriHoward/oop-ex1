@@ -1,6 +1,6 @@
 # oop-ex1
 
-##Description
+## Description
 
 In this assignment we had to develop an offline algorithm to allocate a given list of calls to the elevators as efficiently as possible
 
@@ -52,7 +52,7 @@ running the output using the simulator given:
 
 `java -jar Ex1_checker_V1.2_obf.jar 12,12 ./Ex1_Buildings/B4.json out.csv out.log`
 
-##UML
+## UML
 
 ![UML](misc/class-diagram.png)
 
