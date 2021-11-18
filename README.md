@@ -1,5 +1,9 @@
 # oop-ex1
 
+##Description
+
+In this assignment we had to develop an offline algorithm to allocate a given list of calls to the elevators as efficiently as possible
+
 ### Detailed documentation can be found in the `pdf` file in this repo
 
 ```
