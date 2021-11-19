@@ -14,7 +14,7 @@ for building_file in os.listdir(buildings_dir):
         curr_building_path = os.path.join(buildings_dir, building_file)
         curr_calls_path = os.path.join(calls_dir, calls_file)
 
-        check_output(['python', 'main.py', curr_building_path, curr_calls_path, allocated_calls_file])
+        check_output(['python', 'Ex1.py', curr_building_path, curr_calls_path, allocated_calls_file])
 
         if os.path.exists(allocated_calls_file):
             out = check_output(

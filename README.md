@@ -11,7 +11,7 @@ In this assignment we had to develop an offline algorithm to allocate a given li
 ├── misc                    # contains misc files
 └── get_results.py          # utility script to get results fast
 └── OOP - Assignment 1.pdf  # Detailed documentation                 
-└── main.py                 
+└── Ex1.py                 
 └── StatusEnum.py
 └── Building.py
 └── CallForElevator.py
@@ -29,7 +29,7 @@ In this assignment we had to develop an offline algorithm to allocate a given li
 * Python 3.9.7
 * no additional packages are used
 
-The `main.py` script needs the following arguments to run:
+The `Ex1.py` script needs the following arguments to run:
 
 1. `json` file that contains the building information
 2. `csv` file that contains the calls that need to get allocated
@@ -38,13 +38,13 @@ The `main.py` script needs the following arguments to run:
 
 example without the optional argument:
 
-`python main.py Ex1_Buildings/B3.json Ex1_Calls/Calls_c.csv`
+`python Ex1.py Ex1_Buildings/B3.json Ex1_Calls/Calls_c.csv`
 
 creates a csv file `out.csv` (default) with the allocation results
 
 example with the optional argument:
 
-`python main.py Ex1_Buildings/B3.json Ex1_Calls/Calls_c.csv B3C3.csv`
+`python Ex1.py Ex1_Buildings/B3.json Ex1_Calls/Calls_c.csv B3C3.csv`
 
 creates a csv file `B3C3.csv` (default) with the allocation results
 
